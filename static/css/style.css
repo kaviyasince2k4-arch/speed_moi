@@ -1,0 +1,968 @@
+/* ==========================================================================
+   SPEED MOI - STYLESHEET
+   Palette:
+     Primary: Deep Burgundy / Maroon (#58111A, #420D13, #6E1B25)
+     Accent: Champagne Gold (#D4AF37, #E5C158, #997D2B, #FAF3E0)
+     Background: Warm Ivory / Cream (#FAF7F2, #F3ECE2)
+     Text: Deep Charcoal (#1F1A1B), Warm Muted (#6B6163)
+   Font Stack:
+     System Sans with full Indian scripts fallbacks:
+     Tamil, Devanagari, Kannada, Malayalam, Telugu, Nirmala UI
+   ========================================================================== */
+
+:root {
+  --color-burgundy-900: #2C070D;
+  --color-burgundy-800: #420D13;
+  --color-burgundy-700: #58111A;
+  --color-burgundy-600: #6E1B25;
+  --color-burgundy-500: #88222F;
+
+  --color-gold-700: #8D701F;
+  --color-gold-600: #AA8725;
+  --color-gold-500: #CBA234;
+  --color-gold-400: #D4AF37;
+  --color-gold-300: #E6C86E;
+  --color-gold-100: #FBF6E9;
+  --color-gold-50:  #FDFBF5;
+
+  --color-ivory-50:  #FCFAF7;
+  --color-ivory-100: #FAF7F2;
+  --color-ivory-200: #F4EFE6;
+  --color-ivory-300: #E9E1D4;
+
+  --color-text-main:  #1F1A1B;
+  --color-text-muted: #6B6163;
+  --color-text-light: #948789;
+  --color-white:      #FFFFFF;
+  --color-danger:     #9C1C26;
+  --color-success:    #22683E;
+
+  --font-stack: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI",
+                "Noto Sans Tamil", "Noto Sans Devanagari", "Noto Sans Kannada", "Noto Sans Malayalam",
+                "Nirmala UI", sans-serif;
+  --font-serif: "Cinzel", "Cormorant Garamond", Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100vh;
+  background-color: var(--color-ivory-100);
+  color: var(--color-text-main);
+  font-family: var(--font-stack);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tabular figures for numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Header & Navigation */
+.speed-header {
+  background-color: var(--color-burgundy-800);
+  border-bottom: 2px solid var(--color-gold-400);
+  color: var(--color-white);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 4px 16px rgba(44, 7, 13, 0.15);
+}
+
+.speed-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--color-white);
+}
+
+.brand-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-600));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-burgundy-900);
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.brand-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-gold-300);
+  text-transform: uppercase;
+}
+
+.header-active-function {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  max-width: 380px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-active-label {
+  color: var(--color-gold-300);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.header-active-name {
+  color: var(--color-white);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-gold-300);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-link.active {
+  color: var(--color-gold-300);
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.btn-nav-logout {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.825rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-nav-logout:hover {
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Page Layout */
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.page-header {
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-title {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--color-burgundy-800);
+  letter-spacing: -0.01em;
+}
+
+.page-subtitle {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.2rem;
+}
+
+/* Cards & Surfaces */
+.card {
+  background: var(--color-white);
+  border: 1px solid var(--color-ivory-300);
+  border-radius: 12px;
+  padding: 1.75rem;
+  box-shadow: 0 4px 16px rgba(66, 13, 19, 0.04);
+}
+
+.card-gold-accent {
+  border-top: 4px solid var(--color-gold-400);
+}
+
+/* Authentication Page */
+.auth-wrapper {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--color-white);
+  border-radius: 14px;
+  border: 1px solid var(--color-ivory-300);
+  border-top: 5px solid var(--color-gold-400);
+  box-shadow: 0 12px 32px rgba(44, 7, 13, 0.08);
+  padding: 2.25rem;
+}
+
+.auth-brand-center {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.auth-brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, var(--color-burgundy-800), var(--color-burgundy-600));
+  color: var(--color-gold-400);
+  font-size: 1.6rem;
+  font-weight: 800;
+  border-radius: 12px;
+  border: 1px solid var(--color-gold-400);
+  margin-bottom: 0.75rem;
+}
+
+.auth-brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--color-burgundy-900);
+  text-transform: uppercase;
+}
+
+.auth-tagline {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+/* Forms & Inputs */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-burgundy-900);
+  margin-bottom: 0.4rem;
+}
+
+.form-label span.req {
+  color: var(--color-danger);
+  margin-left: 2px;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #D5C9B8;
+  border-radius: 8px;
+  background-color: var(--color-ivory-50);
+  color: var(--color-text-main);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all 0.15s ease;
+}
+
+.form-input:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--color-gold-500);
+  background-color: var(--color-white);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.field-highlight {
+  border-color: #E05252 !important;
+  background-color: #FFF8F8 !important;
+  box-shadow: 0 0 0 3px rgba(224, 82, 82, 0.2) !important;
+  animation: gentlePulse 2s infinite;
+}
+
+@keyframes gentlePulse {
+  0%, 100% { border-color: #E05252; }
+  50% { border-color: #F8B4B4; }
+}
+
+.mic-active {
+  background: #9C1C26 !important;
+  color: #FFFFFF !important;
+  border-color: #9C1C26 !important;
+  animation: micPulse 1.5s infinite;
+}
+
+@keyframes micPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(156, 28, 38, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(156, 28, 38, 0); }
+}
+
+.voice-status-badge {
+  font-size: 0.825rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.status-listening {
+  color: #9C1C26;
+  font-weight: 700;
+}
+
+.status-success {
+  color: #166534;
+}
+
+.status-error {
+  color: #9C1C26;
+}
+
+.form-help {
+  font-size: 0.785rem;
+  color: var(--color-text-muted);
+  margin-top: 0.35rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-burgundy-800), var(--color-burgundy-700));
+  color: var(--color-gold-100);
+  border: 1px solid var(--color-gold-500);
+  box-shadow: 0 3px 10px rgba(66, 13, 19, 0.2);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--color-burgundy-700), var(--color-burgundy-600));
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(66, 13, 19, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-600));
+  color: var(--color-burgundy-900);
+  border: 1px solid var(--color-gold-600);
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, var(--color-gold-300), var(--color-gold-500));
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--color-ivory-200);
+  color: var(--color-burgundy-900);
+  border: 1px solid #D5C9B8;
+}
+
+.btn-secondary:hover {
+  background: #E8DFC8;
+  border-color: #C0B29E;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Alerts & Notifications */
+.alert {
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.alert-danger {
+  background: #FDF2F2;
+  color: #9C1C26;
+  border: 1px solid #F8B4B4;
+}
+
+.alert-success {
+  background: #F0FDF4;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+}
+
+.alert-info {
+  background: #FFFBEB;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+/* Data Tables */
+.table-responsive {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid var(--color-ivory-300);
+  background: var(--color-white);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th {
+  background: var(--color-burgundy-800);
+  color: var(--color-gold-300);
+  font-weight: 600;
+  font-size: 0.825rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.85rem 1rem;
+  border: none;
+}
+
+.data-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--color-ivory-200);
+  font-size: 0.925rem;
+  color: var(--color-text-main);
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+  background-color: var(--color-ivory-50);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  color: var(--color-text-muted);
+}
+
+.empty-state-icon {
+  font-size: 2.5rem;
+  color: var(--color-gold-500);
+  margin-bottom: 1rem;
+}
+
+.empty-state-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-burgundy-900);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.empty-state-text {
+  max-width: 420px;
+  margin: 0 auto 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .speed-header-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+  .brand-wrap {
+    justify-content: center;
+  }
+  .header-active-function {
+    max-width: 100%;
+    justify-content: center;
+  }
+  .nav-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .main-container {
+    padding: 1.25rem 1rem 3rem;
+  }
+}
+
+/* ==========================================================================
+   INDIVIDUAL RECEIPT / THERMAL BILL STYLES
+   ========================================================================== */
+.receipt-wrapper {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* On-Screen Card Representation */
+.thermal-receipt-container {
+  background: #FFFDF9;
+  border: 1px solid var(--color-gold-400);
+  box-shadow: 0 8px 24px rgba(66, 13, 19, 0.08);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 0 auto;
+  color: #1F1A1B;
+  transition: max-width 0.2s ease;
+  position: relative;
+}
+
+.thermal-receipt-container.size-80mm {
+  max-width: 360px; /* ~80mm visual scale */
+}
+
+.thermal-receipt-container.size-58mm {
+  max-width: 290px; /* ~58mm visual scale */
+}
+
+.thermal-receipt-container.size-a5 {
+  max-width: 480px; /* A5 scale */
+}
+
+/* Copy notice at top right */
+.receipt-copy-notice {
+  text-align: right;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* Boxed sections with thin borders */
+.receipt-boxed-section {
+  border: 1px solid #D5C9B8;
+  border-radius: 3px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  background: #FFFFFF;
+}
+
+/* Header Box */
+.receipt-header-box {
+  text-align: center;
+}
+
+.receipt-motif {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--color-gold-600);
+  margin-bottom: 2px;
+}
+
+.receipt-main-title {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: var(--color-burgundy-900);
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.receipt-sub-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-gold-700);
+  margin-top: 3px;
+}
+
+/* Function Box */
+.receipt-function-box {
+  text-align: center;
+}
+
+.receipt-func-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-burgundy-900);
+  line-height: 1.25;
+  margin-bottom: 3px;
+}
+
+.receipt-host-lines {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--color-text-main);
+  margin: 3px 0;
+  font-weight: 500;
+}
+
+.receipt-venue-line,
+.receipt-contact-line,
+.receipt-date-line {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--color-text-main);
+  margin-top: 2px;
+}
+
+/* Entry Box */
+.receipt-entry-box {
+  padding: 8px 10px;
+}
+
+.receipt-row-split {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.receipt-entry-datetime {
+  color: var(--color-text-muted);
+}
+
+.receipt-entry-bill-id {
+  color: var(--color-burgundy-900);
+  font-weight: 800;
+}
+
+.receipt-divider-line {
+  border-top: 1px dashed #D5C9B8;
+  margin: 6px 0;
+}
+
+.receipt-contributor-section,
+.receipt-place-section {
+  margin: 4px 0;
+}
+
+.receipt-field-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.receipt-contributor-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-burgundy-900);
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.receipt-place-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.receipt-amount-container {
+  text-align: center;
+  padding: 4px 0;
+}
+
+.receipt-amount-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.receipt-amount-huge {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: var(--color-burgundy-900);
+  letter-spacing: 0.03em;
+  margin-top: 2px;
+}
+
+/* Clerk Line */
+.receipt-clerk-line {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  padding: 4px 0;
+}
+
+/* Footer Box */
+.receipt-footer-box {
+  text-align: center;
+  padding: 6px 8px;
+  border-top: 1px dashed #D5C9B8;
+  margin-top: 6px;
+}
+
+.receipt-thankyou {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-burgundy-900);
+}
+
+.receipt-footer-brand {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--color-gold-700);
+  margin-top: 2px;
+}
+
+.receipt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   PRINT CSS (THERMAL 80MM / 58MM & A5 HIGH-CONTRAST BLACK & WHITE)
+   ========================================================================== */
+@media print {
+  html, body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 12px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .speed-header,
+  .receipt-actions,
+  .flash-messages,
+  .page-header,
+  .no-print {
+    display: none !important;
+  }
+
+  .main-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .receipt-wrapper {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Thermal Receipt Card in Print */
+  .thermal-receipt-container {
+    background: #FFFFFF !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 1mm 2mm !important;
+    margin: 0 auto !important;
+    color: #000000 !important;
+    page-break-inside: avoid !important;
+  }
+
+  .thermal-receipt-container.size-80mm {
+    width: 74mm !important;
+    max-width: 74mm !important;
+  }
+
+  .thermal-receipt-container.size-58mm {
+    width: 50mm !important;
+    max-width: 50mm !important;
+  }
+
+  .thermal-receipt-container.size-a5 {
+    width: 130mm !important;
+    max-width: 130mm !important;
+  }
+
+  /* Black text on white with thin black borders, NO filled areas */
+  .receipt-boxed-section {
+    border: 1px solid #000000 !important;
+    background: #FFFFFF !important;
+    border-radius: 0 !important;
+    padding: 1.5mm 2mm !important;
+    margin-bottom: 1.5mm !important;
+  }
+
+  .receipt-copy-notice {
+    color: #000000 !important;
+    font-size: 8px !important;
+    font-weight: 700 !important;
+  }
+
+  .receipt-motif {
+    color: #000000 !important;
+  }
+
+  .receipt-main-title {
+    color: #000000 !important;
+    font-size: 16px !important;
+    font-weight: 900 !important;
+  }
+
+  .receipt-sub-badge {
+    color: #000000 !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+  }
+
+  .receipt-func-name {
+    color: #000000 !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+  }
+
+  .receipt-host-lines,
+  .receipt-venue-line,
+  .receipt-contact-line,
+  .receipt-date-line {
+    color: #000000 !important;
+    font-size: 10px !important;
+  }
+
+  .receipt-row-split {
+    font-size: 10px !important;
+    color: #000000 !important;
+  }
+
+  .receipt-entry-datetime {
+    color: #000000 !important;
+  }
+
+  .receipt-entry-bill-id {
+    color: #000000 !important;
+    font-weight: 900 !important;
+  }
+
+  .receipt-divider-line {
+    border-top: 1px dashed #000000 !important;
+    margin: 1.5mm 0 !important;
+  }
+
+  .receipt-field-label {
+    color: #000000 !important;
+    font-size: 9px !important;
+    font-weight: 700 !important;
+  }
+
+  .receipt-contributor-name {
+    color: #000000 !important;
+    font-size: 15px !important;
+    font-weight: 900 !important;
+    line-height: 1.2 !important;
+  }
+
+  .receipt-place-val {
+    color: #000000 !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+  }
+
+  .receipt-amount-container {
+    padding: 1mm 0 !important;
+  }
+
+  .receipt-amount-label {
+    color: #000000 !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+  }
+
+  .receipt-amount-huge {
+    color: #000000 !important;
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .receipt-clerk-line {
+    color: #000000 !important;
+    font-size: 10px !important;
+  }
+
+  .receipt-footer-box {
+    border-top: 1px dashed #000000 !important;
+    padding-top: 1.5mm !important;
+  }
+
+  .receipt-thankyou {
+    color: #000000 !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+  }
+
+  .receipt-footer-brand {
+    color: #000000 !important;
+    font-size: 9px !important;
+  }
+}
+
+

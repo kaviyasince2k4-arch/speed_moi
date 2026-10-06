@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}SPEED MOI{% endblock %} - Contribution Recording</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Kannada:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  {% if session.get('user_id') %}
+  <header class="speed-header">
+    <div class="speed-header-inner">
+      <a href="{{ url_for('dashboard') if session.get('function_id') else url_for('function_setup') }}" class="brand-wrap">
+        <div class="brand-icon">₹</div>
+        <div class="brand-title">SPEED MOI</div>
+      </a>
+
+      {% if current_function %}
+      <div class="header-active-function" title="{{ current_function.function_name }} ({{ current_function.function_date }})">
+        <span class="header-active-label">Function:</span>
+        <span class="header-active-name">{{ current_function.function_name }}</span>
+      </div>
+      {% endif %}
+
+      <nav class="nav-actions">
+        {% if session.get('function_id') %}
+        <a href="{{ url_for('add_contribution') }}" class="nav-link {% if request.path == url_for('add_contribution') %}active{% endif %}">
+          + Add Entry
+        </a>
+        <a href="{{ url_for('contributions_list') }}" class="nav-link {% if request.path == url_for('contributions_list') %}active{% endif %}">
+          Contributions
+        </a>
+        <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.path == url_for('dashboard') %}active{% endif %}">
+          Dashboard
+        </a>
+        {% endif %}
+        <a href="{{ url_for('previous_functions') }}" class="nav-link {% if request.path == url_for('previous_functions') %}active{% endif %}">
+          Functions
+        </a>
+        <a href="{{ url_for('function_setup') }}" class="nav-link {% if request.path == url_for('function_setup') %}active{% endif %}">
+          + New Function
+        </a>
+        <a href="{{ url_for('function_setup') }}" class="btn-nav-logout">
+          + Setup
+        </a>
+      </nav>
+    </div>
+  </header>
+  {% endif %}
+
+  <main class="main-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category if category != 'error' else 'danger' }}">
+              <div>{{ message }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

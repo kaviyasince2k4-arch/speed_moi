@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Previous Functions - SPEED MOI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Previous Functions</h1>
+    <p class="page-subtitle">List of all recorded functions. Click "Open" to switch the active function.</p>
+  </div>
+  <div>
+    <a href="{{ url_for('function_setup') }}" class="btn btn-gold">
+      + Setup New Function
+    </a>
+  </div>
+</div>
+
+<div class="card">
+  {% if functions %}
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Function Name</th>
+          <th>Coordinator</th>
+          <th>Function Date</th>
+          <th style="text-align: right;">Contributors</th>
+          <th style="text-align: right;">Total Amount</th>
+          <th style="text-align: center;">Status / Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fn in functions %}
+        <tr>
+          <td class="tabular-nums" style="color: var(--color-text-muted); font-weight: 500;">{{ loop.index }}</td>
+          <td style="font-weight: 600; color: var(--color-burgundy-900);">{{ fn.function_name }}</td>
+          <td>{{ fn.coordinator_name }}</td>
+          <td class="tabular-nums">{{ fn.function_date }}</td>
+          <td class="tabular-nums" style="text-align: right; font-weight: 600;">{{ fn.total_contributors }}</td>
+          <td class="tabular-nums" style="text-align: right; font-weight: 700; color: var(--color-burgundy-800);">₹{{ "{:,}".format(fn.total_amount) }}</td>
+          <td style="text-align: center;">
+            {% if session.get('function_id') == fn.id %}
+              <span style="display: inline-block; padding: 0.35rem 0.75rem; background: var(--color-gold-100); color: var(--color-gold-700); border: 1px solid var(--color-gold-400); border-radius: 6px; font-weight: 600; font-size: 0.8rem;">
+                Currently Active
+              </span>
+            {% else %}
+              <a href="{{ url_for('open_function', function_id=fn.id) }}" class="btn btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.825rem;">
+                Open
+              </a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-state-icon">📋</div>
+    <h3 class="empty-state-title">No Functions Found</h3>
+    <p class="empty-state-text">You haven't set up any functions yet. Create your first function to start recording contributions.</p>
+    <a href="{{ url_for('function_setup') }}" class="btn btn-gold">
+      Setup Your First Function
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

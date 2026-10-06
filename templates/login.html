@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Login - SPEED MOI{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-brand-center">
+      <div class="auth-brand-icon">₹</div>
+      <h1 class="auth-brand-name">SPEED MOI</h1>
+      <p class="auth-tagline">Traditional Function Contribution Recorder</p>
+    </div>
+
+    {% if is_first_time %}
+    <!-- First Time Setup: Create Initial Admin Account -->
+    <div class="alert alert-info">
+      <strong>First-Time Setup:</strong> No admin account found. Please create the master administrator account to get started.
+    </div>
+
+    <form method="POST" action="{{ url_for('create_admin') }}" autocomplete="off">
+      <div class="form-group">
+        <label class="form-label" for="username">Admin Username <span class="req">*</span></label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          class="form-input" 
+          placeholder="e.g. admin" 
+          required 
+          autofocus
+        >
+        <p class="form-help">Choose a username to log in with.</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password <span class="req">*</span></label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="form-input" 
+          placeholder="Minimum 6 characters" 
+          minlength="6" 
+          required
+        >
+        <p class="form-help">Must be at least 6 characters long.</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="confirm_password">Confirm Password <span class="req">*</span></label>
+        <input 
+          type="password" 
+          id="confirm_password" 
+          name="confirm_password" 
+          class="form-input" 
+          placeholder="Re-enter password" 
+          minlength="6" 
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn btn-gold btn-block" style="margin-top: 1.5rem;">
+        Create Admin Account
+      </button>
+    </form>
+
+    {% else %}
+    <!-- Normal Login Form -->
+    <form method="POST" action="{{ url_for('login') }}" autocomplete="off">
+      <div class="form-group">
+        <label class="form-label" for="username">Username <span class="req">*</span></label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          class="form-input" 
+          placeholder="Enter username" 
+          required 
+          autofocus
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password <span class="req">*</span></label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="form-input" 
+          placeholder="Enter password" 
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.5rem;">
+        Login
+      </button>
+    </form>
+
+    <div style="margin-top: 1.25rem; padding: 0.65rem 0.85rem; background: var(--color-gold-50); border: 1px solid var(--color-gold-300); border-radius: 8px; text-align: center; font-size: 0.85rem; color: var(--color-burgundy-900);">
+      <strong>Login Details:</strong><br>
+      Username: <code style="background: white; padding: 2px 6px; border-radius: 4px; font-weight: 600;">admin</code> &nbsp;|&nbsp; 
+      Password: <code style="background: white; padding: 2px 6px; border-radius: 4px; font-weight: 600;">admin123</code>
+    </div>
+
+    <div style="margin-top: 1rem; text-align: center; font-size: 0.8rem; color: var(--color-text-light);">
+      Forgot password? Run <code>python reset_password.py</code> on your computer.
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

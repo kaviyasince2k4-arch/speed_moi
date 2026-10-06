@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}Receipt {{ bill_id }} - SPEED MOI{% endblock %}
+
+{% block extra_head %}
+<!-- Dynamic Print Style Tag adjusted based on bill size selection -->
+<style id="dynamic-print-style">
+  @media print {
+    @page {
+      size: 80mm auto;
+      margin: 2mm;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="receipt-wrapper">
+  <!-- Top Navigation & Controls Bar -->
+  <div class="no-print" style="margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+    <div style="font-size: 0.9rem; color: var(--color-success); font-weight: 700;">
+      ✓ Contribution Recorded: {{ bill_id }}
+    </div>
+
+    <!-- Bill Size Selector -->
+    <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--color-ivory-50); border: 1px solid var(--color-gold-400); border-radius: 6px; padding: 0.35rem 0.75rem;">
+      <label for="bill-size-select" style="font-size: 0.8rem; font-weight: 700; color: var(--color-burgundy-900);">
+        Bill Size:
+      </label>
+      <select id="bill-size-select" class="form-select" style="width: auto; padding: 0.25rem 0.5rem; font-size: 0.825rem; background: white;">
+        <option value="80mm" selected>Thermal 80 mm (Default)</option>
+        <option value="58mm">Thermal 58 mm</option>
+        <option value="a5">A5 Paper</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Thermal Receipt Container -->
+  <div class="thermal-receipt-container size-80mm" id="thermal-receipt-card">
+    
+    <!-- Top Right Copy Notice -->
+    <div class="receipt-copy-notice">
+      Contributor's Copy / மொய் செய்தவரின் நகல்
+    </div>
+
+    <!-- 1. Header Box -->
+    <div class="receipt-boxed-section receipt-header-box">
+      <div class="receipt-motif">❖ ❖ ❖</div>
+      <div class="receipt-main-title">SPEED MOI</div>
+      <div class="receipt-sub-badge">
+        Contribution Receipt / பங்களிப்பு ரசீது
+      </div>
+    </div>
+
+    <!-- 2. Function Box -->
+    <div class="receipt-boxed-section receipt-function-box">
+      <div class="receipt-func-name">
+        {{ contribution.function_name }}
+      </div>
+
+      {% if contribution.host_details %}
+      <div class="receipt-host-lines">
+        {% for line in contribution.host_details.split('\n') %}
+          {% if line.strip() %}
+          <div>{{ line.strip() }}</div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if contribution.venue %}
+      <div class="receipt-venue-line">
+        <strong>Venue / இடம்:</strong> {{ contribution.venue }}
+      </div>
+      {% endif %}
+
+      {% if contribution.contact_number %}
+      <div class="receipt-contact-line">
+        <strong>Ph / தொலைபேசி:</strong> {{ contribution.contact_number }}
+      </div>
+      {% endif %}
+
+      <div class="receipt-date-line">
+        <strong>Date / தேதி:</strong> {{ contribution.function_date }}
+      </div>
+    </div>
+
+    <!-- 3. Entry Box -->
+    <div class="receipt-boxed-section receipt-entry-box">
+      <!-- Row: Date & Time (Left) | Bill ID (Right) -->
+      <div class="receipt-row-split">
+        <div class="receipt-entry-datetime tabular-nums">
+          {{ contribution.entry_date }} · {{ contribution.entry_time }}
+        </div>
+        <div class="receipt-entry-bill-id tabular-nums">
+          Bill No / எண்: <strong>{{ bill_id }}</strong>
+        </div>
+      </div>
+
+      <div class="receipt-divider-line"></div>
+
+      <!-- Contributor Name -->
+      <div class="receipt-contributor-section">
+        <div class="receipt-field-label">Name / பெயர்:</div>
+        <div class="receipt-contributor-name">
+          {{ contribution.contributor_name }}
+        </div>
+      </div>
+
+      <!-- Native Place -->
+      <div class="receipt-place-section">
+        <div class="receipt-field-label">Native Place / ஊர்:</div>
+        <div class="receipt-place-val">
+          {{ contribution.native_place }}
+        </div>
+      </div>
+
+      <div class="receipt-divider-line"></div>
+
+      <!-- Amount Section -->
+      <div class="receipt-amount-container">
+        <div class="receipt-amount-label">
+          Contribution Amount / பங்களிப்பு தொகை
+        </div>
+        <div class="receipt-amount-huge tabular-nums">
+          ₹ {{ "{:,}".format(contribution.amount) }}
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Clerk Line -->
+    <div class="receipt-clerk-line">
+      Written by / எழுத்தர்: <strong>{{ contribution.clerk_name or contribution.coordinator_name }}</strong>
+    </div>
+
+    <!-- 5. Footer Box -->
+    <div class="receipt-footer-box">
+      <div class="receipt-thankyou">Thank you / நன்றி</div>
+      <div class="receipt-footer-brand">SPEED MOI</div>
+    </div>
+
+  </div>
+
+  <!-- Action Buttons (Never printed) -->
+  <div class="receipt-actions no-print" style="margin-top: 2rem;">
+    <button id="btn-print-bill" onclick="window.print();" class="btn btn-gold" style="font-size: 1.1rem; padding: 0.85rem 2rem;">
+      🖨️ Print Bill
+    </button>
+    <a href="{{ url_for('add_contribution') }}" class="btn btn-primary" style="font-size: 1.05rem; padding: 0.85rem 1.5rem;">
+      ➕ Add Another Contribution
+    </a>
+    <a href="{{ url_for('contributions_list') }}" class="btn btn-secondary">
+      📋 View All Contributions
+    </a>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+      🏠 Dashboard
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Handle Bill Size Selection (Thermal 80mm, Thermal 58mm, A5)
+  const sizeSelect = document.getElementById('bill-size-select');
+  const receiptCard = document.getElementById('thermal-receipt-card');
+  const printStyleTag = document.getElementById('dynamic-print-style');
+
+  function updateBillSize(size) {
+    if (!receiptCard || !printStyleTag) return;
+
+    // Remove existing classes
+    receiptCard.classList.remove('size-80mm', 'size-58mm', 'size-a5');
+    receiptCard.classList.add(`size-${size}`);
+
+    // Update print media rule dynamically
+    if (size === '58mm') {
+      printStyleTag.innerHTML = `
+        @media print {
+          @page {
+            size: 58mm auto;
+            margin: 1mm;
+          }
+        }
+      `;
+    } else if (size === 'a5') {
+      printStyleTag.innerHTML = `
+        @media print {
+          @page {
+            size: A5 portrait;
+            margin: 6mm;
+          }
+        }
+      `;
+    } else {
+      // Default 80mm
+      printStyleTag.innerHTML = `
+        @media print {
+          @page {
+            size: 80mm auto;
+            margin: 2mm;
+          }
+        }
+      `;
+    }
+
+    localStorage.setItem('speed_moi_bill_size', size);
+  }
+
+  if (sizeSelect) {
+    const savedSize = localStorage.getItem('speed_moi_bill_size') || '80mm';
+    sizeSelect.value = savedSize;
+    updateBillSize(savedSize);
+
+    sizeSelect.addEventListener('change', function() {
+      updateBillSize(sizeSelect.value);
+    });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% block title %}Add Contribution - SPEED MOI{% endblock %}
+
+{% block content %}
+<div style="max-width: 860px; margin: 0 auto;">
+  <!-- Header Bar -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Record Contribution</h1>
+      <p class="page-subtitle">
+        Function: <strong style="color: var(--color-burgundy-900);">{{ current_function.function_name }}</strong> · 
+        Coordinator: <strong>{{ current_function.coordinator_name }}</strong> · 
+        Date: <span class="tabular-nums">{{ current_function.function_date }}</span>
+      </p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+      <a href="{{ url_for('dashboard') }}" class="btn btn-secondary" style="padding: 0.45rem 0.95rem; font-size: 0.85rem;">
+        Dashboard
+      </a>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card card-gold-accent" style="margin-bottom: 2rem;">
+    <!-- Live Meta Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-ivory-50); border: 1px solid var(--color-ivory-300); border-radius: 8px; padding: 0.65rem 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem;">
+      <div>
+        <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--color-gold-700); letter-spacing: 0.05em;">NEXT BILL ID:</span>
+        <span class="tabular-nums" style="font-weight: 800; color: var(--color-burgundy-800); font-size: 1.05rem; margin-left: 0.25rem;">
+          SM-{{ "%04d"|format(current_function.next_bill_number) }}
+        </span>
+      </div>
+      <div style="font-size: 0.85rem; color: var(--color-text-muted);">
+        <span id="live-date-time" class="tabular-nums">Loading local time...</span>
+      </div>
+    </div>
+
+    <!-- Voice Control Bar -->
+    <div style="background: var(--color-ivory-100); border: 1px solid var(--color-gold-300); border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 1.5rem;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <label for="voice-lang-select" style="font-size: 0.825rem; font-weight: 700; color: var(--color-burgundy-900);">
+            Voice Language:
+          </label>
+          <select id="voice-lang-select" class="form-select" style="width: auto; padding: 0.35rem 0.65rem; font-size: 0.85rem; background: white;">
+            <option value="en-IN">English (India)</option>
+            <option value="ta-IN" selected>Tamil (தமிழ்)</option>
+            <option value="hi-IN">Hindi (हिन्दी)</option>
+            <option value="kn-IN">Kannada (ಕನ್ನಡ)</option>
+            <option value="ml-IN">Malayalam (മലയാളം)</option>
+            <option value="tanglish">Tanglish (Tamil in English letters)</option>
+          </select>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <button type="button" id="mic-btn" class="btn btn-secondary" style="padding: 0.45rem 1rem; font-size: 0.875rem; font-weight: 700;">
+            🎤 Voice Input
+          </button>
+          <button type="button" id="voice-retry-btn" class="btn btn-secondary" style="display: none; padding: 0.45rem 0.75rem; font-size: 0.825rem;">
+            🔄 Retry
+          </button>
+          <span id="voice-status" class="voice-status-badge">
+            Ready (tap mic to speak)
+          </span>
+        </div>
+      </div>
+
+      <!-- Live Recognized Transcript Box -->
+      <div id="voice-transcript-box" style="display: none; margin-top: 0.75rem; padding: 0.6rem 0.85rem; background: #FFFFFF; border: 1px solid #D5C9B8; border-radius: 6px; font-size: 0.875rem; color: var(--color-text-main);">
+        <div id="voice-transcript-text">Listening...</div>
+      </div>
+
+      <!-- User Instruction Note -->
+      <div id="voice-feedback-msg" style="display: none; margin-top: 0.5rem; font-size: 0.825rem; padding: 0.4rem 0.6rem; border-radius: 4px; font-weight: 600;"></div>
+    </div>
+
+    <!-- Main Contribution Form -->
+    <form id="contribution-form" method="POST" action="{{ url_for('save_contribution') }}" autocomplete="off">
+      <input type="hidden" name="entry_date" id="entry_date">
+      <input type="hidden" name="entry_time" id="entry_time">
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+        <!-- Contributor Name -->
+        <div class="form-group" style="grid-column: span 1;">
+          <label class="form-label" for="contributor_name">
+            Contributor Name <span class="req">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="contributor_name" 
+            name="contributor_name" 
+            class="form-input" 
+            placeholder="e.g. Ramesh Kumar / ரமேஷ் குமார்" 
+            required 
+            autofocus
+            style="font-size: 1.05rem;"
+          >
+          <p class="form-help">Enter full name (supports Tamil, English & Indian scripts).</p>
+        </div>
+
+        <!-- Native Place -->
+        <div class="form-group" style="grid-column: span 1;">
+          <label class="form-label" for="native_place">
+            Native Place / Village / Town <span class="req">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="native_place" 
+            name="native_place" 
+            class="form-input" 
+            placeholder="e.g. Salem / சேலம், Madurai" 
+            required
+            style="font-size: 1.05rem;"
+          >
+          <p class="form-help">Native village, town, or city.</p>
+        </div>
+      </div>
+
+      <!-- Amount -->
+      <div class="form-group">
+        <label class="form-label" for="amount">
+          Contribution Amount (₹) <span class="req">*</span>
+        </label>
+        <div style="position: relative;">
+          <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.35rem; font-weight: 700; color: var(--color-burgundy-800);">
+            ₹
+          </span>
+          <input 
+            type="number" 
+            id="amount" 
+            name="amount" 
+            class="form-input tabular-nums" 
+            placeholder="e.g. 2000" 
+            min="1" 
+            step="1"
+            required
+            style="padding-left: 2.5rem; font-size: 1.5rem; font-weight: 700; color: var(--color-burgundy-900);"
+          >
+        </div>
+        <p class="form-help">Enter numeric amount without comma or currency symbol.</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: 1rem; margin-top: 1.75rem;">
+        <button 
+          type="submit" 
+          id="btn-submit-save" 
+          class="btn btn-gold" 
+          style="flex: 2; font-size: 1.1rem; padding: 0.85rem 1.5rem;"
+        >
+          ✓ Confirm &amp; Save
+        </button>
+        <button 
+          type="button" 
+          id="btn-clear" 
+          class="btn btn-secondary" 
+          style="flex: 1; font-size: 1.05rem;"
+        >
+          Clear
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Recently Saved Contributions for Current Function -->
+  {% if recent_contributions %}
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h3 style="font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; color: var(--color-burgundy-900);">
+        Recently Saved Contributions
+      </h3>
+      <span style="font-size: 0.8rem; color: var(--color-text-muted);">Showing last 5</span>
+    </div>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Bill ID</th>
+            <th>Contributor Name</th>
+            <th>Native Place</th>
+            <th style="text-align: right;">Amount</th>
+            <th>Time</th>
+            <th style="text-align: center;">Receipt</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in recent_contributions %}
+          <tr>
+            <td class="tabular-nums" style="font-weight: 700; color: var(--color-burgundy-800);">
+              SM-{{ "%04d"|format(item.bill_number) }}
+            </td>
+            <td style="font-weight: 600;">{{ item.contributor_name }}</td>
+            <td>{{ item.native_place }}</td>
+            <td class="tabular-nums" style="text-align: right; font-weight: 700; color: var(--color-gold-700);">
+              ₹{{ "{:,}".format(item.amount) }}
+            </td>
+            <td class="tabular-nums" style="font-size: 0.85rem; color: var(--color-text-muted);">
+              {{ item.entry_time }}
+            </td>
+            <td style="text-align: center;">
+              <a href="{{ url_for('receipt', contribution_id=item.id) }}" class="btn btn-secondary" style="padding: 0.25rem 0.65rem; font-size: 0.75rem;">
+                View Bill
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Date & Time Handler (Local laptop clock)
+  function updateLocalDateTime() {
+    const now = new Date();
+    
+    // Format DD-MM-YYYY
+    const d = String(now.getDate()).padStart(2, '0');
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const y = now.getFullYear();
+    const formattedDate = `${d}-${m}-${y}`;
+
+    // Format hh:mm AM/PM
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const formattedTime = `${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+
+    const dateInput = document.getElementById('entry_date');
+    const timeInput = document.getElementById('entry_time');
+    const displaySpan = document.getElementById('live-date-time');
+
+    if (dateInput) dateInput.value = formattedDate;
+    if (timeInput) timeInput.value = formattedTime;
+    if (displaySpan) {
+      displaySpan.textContent = `Entry Date: ${formattedDate} · Time: ${formattedTime}`;
+    }
+  }
+
+  // Update clock every second
+  updateLocalDateTime();
+  setInterval(updateLocalDateTime, 1000);
+
+  // Form submission: Prevent double-click creation
+  const form = document.getElementById('contribution-form');
+  const submitBtn = document.getElementById('btn-submit-save');
+
+  if (form && submitBtn) {
+    form.addEventListener('submit', function(e) {
+      // Ensure date & time are fresh on submit
+      updateLocalDateTime();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving Contribution...';
+    });
+  }
+
+  // Clear button handler
+  const clearBtn = document.getElementById('btn-clear');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function() {
+      document.getElementById('contributor_name').value = '';
+      document.getElementById('native_place').value = '';
+      document.getElementById('amount').value = '';
+      document.getElementById('contributor_name').classList.remove('field-highlight');
+      document.getElementById('native_place').classList.remove('field-highlight');
+      document.getElementById('amount').classList.remove('field-highlight');
+      document.getElementById('contributor_name').focus();
+    });
+  }
+</script>
+<script src="{{ url_for('static', filename='js/voice_parser.js') }}"></script>
+<script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+{% endblock %}

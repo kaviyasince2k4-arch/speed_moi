@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Function Setup - SPEED MOI{% endblock %}
+
+{% block content %}
+<div style="max-width: 640px; margin: 1.5rem auto;">
+  <div class="page-header" style="justify-content: center; text-align: center; margin-bottom: 2rem;">
+    <div>
+      <h1 class="page-title">Setup Function</h1>
+      <p class="page-subtitle">Configure wedding, ear piercing, housewarming, or village festival details</p>
+    </div>
+  </div>
+
+  <div class="card card-gold-accent">
+    <form method="POST" action="{{ url_for('start_function') }}" autocomplete="off">
+      <div class="form-group">
+        <label class="form-label" for="function_name">
+          Function Name <span class="req">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="function_name" 
+          name="function_name" 
+          class="form-input" 
+          placeholder="e.g. Ramesh & Priya Wedding, Selvam Ear Piercing" 
+          required 
+          autofocus
+        >
+        <p class="form-help">Enter the event name that will appear on all printed receipts and lists.</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="coordinator_name">
+          Coordinator / Host Name <span class="req">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="coordinator_name" 
+          name="coordinator_name" 
+          class="form-input" 
+          placeholder="e.g. K. Murugan, S. Sundaram" 
+          required
+        >
+        <p class="form-help">Name of the coordinator recording or managing the contributions.</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="function_date">
+          Function Date <span class="req">*</span>
+        </label>
+        <input 
+          type="date" 
+          id="function_date" 
+          name="function_date" 
+          class="form-input" 
+          value="{{ default_date }}"
+          required
+        >
+        <p class="form-help">Date of the ceremony or function.</p>
+      </div>
+
+      <!-- Optional Bill Details Section -->
+      <div style="margin-top: 1.5rem; padding: 1.25rem; background: var(--color-ivory-50); border: 1px solid var(--color-ivory-300); border-radius: 8px;">
+        <div style="font-weight: 700; color: var(--color-burgundy-900); font-size: 0.95rem; margin-bottom: 0.25rem;">
+          Optional Bill Details (printed on thermal receipt)
+        </div>
+        <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 1rem;">
+          These appear on the customer receipt. You can leave them blank if not needed.
+        </p>
+
+        <div class="form-group">
+          <label class="form-label" for="host_details">
+            Host / Family Details (up to 3 short lines)
+          </label>
+          <textarea 
+            id="host_details" 
+            name="host_details" 
+            class="form-input" 
+            rows="3" 
+            placeholder="e.g.&#10;S. Karuppasamy - K. Lakshmi&#10;Er. K. Ramesh - Dr. P. Sujitha"
+            style="resize: vertical; font-size: 0.9rem;"
+          ></textarea>
+          <p class="form-help">Shown beneath the function name on the printed bill.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="venue">
+            Venue / Hall
+          </label>
+          <input 
+            type="text" 
+            id="venue" 
+            name="venue" 
+            class="form-input" 
+            placeholder="e.g. Sri Murugan Mahal, Salem"
+          >
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="contact_number">
+              Contact Number
+            </label>
+            <input 
+              type="text" 
+              id="contact_number" 
+              name="contact_number" 
+              class="form-input" 
+              placeholder="e.g. 9876543210"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="clerk_name">
+              Clerk Name / எழுத்தர்
+            </label>
+            <input 
+              type="text" 
+              id="clerk_name" 
+              name="clerk_name" 
+              class="form-input" 
+              placeholder="Leave blank to use Coordinator"
+            >
+            <p class="form-help">If empty, coordinator name is printed as clerk.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-direction: column;">
+        <button type="submit" class="btn btn-gold btn-block" style="font-size: 1.05rem; padding: 0.85rem 1.5rem;">
+          START CONTRIBUTION
+        </button>
+
+        <a href="{{ url_for('previous_functions') }}" class="btn btn-secondary btn-block">
+          View Previous Functions
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

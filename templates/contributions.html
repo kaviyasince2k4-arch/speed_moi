@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}All Contributions - SPEED MOI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">All Contributions</h1>
+    <p class="page-subtitle">
+      Function: <strong style="color: var(--color-burgundy-900);">{{ current_function.function_name }}</strong> · 
+      Coordinator: <strong>{{ current_function.coordinator_name }}</strong> · 
+      Date: <span class="tabular-nums">{{ current_function.function_date }}</span>
+    </p>
+  </div>
+  <div style="display: flex; gap: 0.75rem;">
+    <a href="{{ url_for('add_contribution') }}" class="btn btn-gold">
+      + Add Contribution
+    </a>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+      Dashboard
+    </a>
+  </div>
+</div>
+
+<!-- Summary Cards -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+  <div class="card" style="padding: 1.25rem;">
+    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted); font-weight: 700;">
+      Total Contributors
+    </div>
+    <div class="tabular-nums" style="font-family: var(--font-serif); font-size: 1.75rem; font-weight: 700; color: var(--color-burgundy-900); margin-top: 0.25rem;">
+      {{ total_contributors }}
+    </div>
+  </div>
+
+  <div class="card" style="padding: 1.25rem;">
+    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted); font-weight: 700;">
+      Total Amount Collected
+    </div>
+    <div class="tabular-nums" style="font-family: var(--font-serif); font-size: 1.75rem; font-weight: 800; color: var(--color-gold-600); margin-top: 0.25rem;">
+      {{ formatted_total_amount }}
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  {% if contributions %}
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Bill ID</th>
+          <th>Contributor Name</th>
+          <th>Native Place</th>
+          <th style="text-align: right;">Amount</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th style="text-align: center;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in contributions %}
+        <tr>
+          <td class="tabular-nums" style="color: var(--color-text-muted);">{{ loop.index }}</td>
+          <td class="tabular-nums" style="font-weight: 700; color: var(--color-burgundy-800);">
+            SM-{{ "%04d"|format(item.bill_number) }}
+          </td>
+          <td style="font-weight: 600; color: var(--color-burgundy-900);">{{ item.contributor_name }}</td>
+          <td>{{ item.native_place }}</td>
+          <td class="tabular-nums" style="text-align: right; font-weight: 700; color: var(--color-gold-700);">
+            ₹{{ "{:,}".format(item.amount) }}
+          </td>
+          <td class="tabular-nums" style="font-size: 0.875rem;">{{ item.entry_date }}</td>
+          <td class="tabular-nums" style="font-size: 0.875rem; color: var(--color-text-muted);">{{ item.entry_time }}</td>
+          <td style="text-align: center;">
+            <a href="{{ url_for('receipt', contribution_id=item.id) }}" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+              Print Bill
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-state-icon">✍️</div>
+    <h3 class="empty-state-title">No Contributions Yet</h3>
+    <p class="empty-state-text">Start recording contributions for this function. Each entry generates a unique bill and receipt.</p>
+    <a href="{{ url_for('add_contribution') }}" class="btn btn-gold">
+      Record First Contribution
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

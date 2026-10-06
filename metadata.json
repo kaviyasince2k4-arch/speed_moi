@@ -1,0 +1,6 @@
+{
+  "name": "SPEED MOI",
+  "description": "Fast contribution (moi) recording web application for traditional functions, weddings, and family gatherings with instant receipt printing and list management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
